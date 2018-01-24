@@ -1,12 +1,32 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
 import sys
 import commands
 import os
 import difflib as dif
 import re
+#from common import chkprint,sUm
 #======prepare======
 PATTERN = re.compile("COMMAND([1-9]{1,2})")
+#======COMMAND======
+
+COMMAND1 = "~/NXS/bin/nxs.sh status+"
+COMMAND2 = "~/NXS/bin/nxs.sh command mccb2bua show rtpproxylist"
+COMMAND3 = "~/NXS/bin/nxs.sh command ham switchover"
+COMMAND11 = "ls"
+COMMAND12 = "ls ~/NXS/tmp/ |grep core"
+COMMAND23 = "python test.py"
+
+#======list(0-9)=======
+Command_ListA = [COMMAND1, COMMAND2, COMMAND3]
+#======list(10-19)
+Command_ListB = [COMMAND11,COMMAND12]
+#======list(20-29)
+Command_ListC = [COMMAND23]
+#======File Path=====
+FilePath = "/home/nextgen/work/python/logtool/status.txt"
+
 def chkprint(args, PATTERN):
     """
     引数から{番号:コマンド}と番号のリストを作る関数
@@ -37,25 +57,6 @@ def chkprint(args, PATTERN):
                    #j= j + 1
     dict_list = dict(zip(name_list, command_list))
     return dict_list, name_list
-#======COMMAND======
-
-COMMAND1 = "~/NXS/bin/nxs.sh status+"
-COMMAND2 = "~/NXS/bin/nxs.sh command mccb2bua show rtpproxylist"
-COMMAND3 = "~/NXS/bin/nxs.sh command ham switchover"
-COMMAND11 = "ls"
-COMMAND12 = "ls ~/NXS/tmp/ |grep core"
-COMMAND23 = "python test.py"
-
-#======list(0-9)=======
-Command_ListA = [COMMAND1, COMMAND2, COMMAND3]
-#======list(10-19)
-Command_ListB = [COMMAND11,COMMAND12]
-#======list(20-29)
-Command_ListC = [COMMAND23]
-#======File Path=====
-FilePath = "/home/nextgen/work/python/logtool/status.txt"
-
-
 #=========
 DICA, NameA_List=chkprint(Command_ListA, PATTERN)
 diff_key_list =  [DICA[str(i)] for i in range(1,len(Command_ListA))]
@@ -70,7 +71,7 @@ DIC_other = {"0":"EXIT", "99":"SIT"}
 yn_dic={'y':True,'yes':True,'n':False,'no':False}
 
 def PrintCommand(dic, number):
-	for i in number:
+    for i in number:
 	   if dic.has_key(i):
 	      print "  %s :    %s"%(i,dic[i])
 
